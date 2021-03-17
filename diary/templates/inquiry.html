@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}お問い合わせ!{% endblock %}
+
+{% block active_inquiry %}active{% endblock %}
+
+{% block contents %}
+<div class="container">
+    <div class="row">
+        <div class="my-div-style">
+            <form method="post">
+                <!-- CSRF(Cross Site Request Forgeries)対策用タグ。Post通信でこのタグを付けないとDjangoはデフォルトで403エラーを返す-->
+                {% csrf_token %}
+                <!-- Cleanメソッドなどで発生するフィールドにまたがるエラー取得 -->
+                {{ form.non_field_errors }}
+                <!-- forms.pyに上から記述した順にフィールドを1つずつ取り出す。-->
+                {% for field in form %}
+                <div class="form-group row">
+                    <label for="{{ field.id_for_label }}" class="col-sm-4 col-form-label">
+                        <strong>{{ field.label_tag }}</strong>
+                    </label>
+                    <div class="col-sm-8">
+                        {{ field }}
+                        <!-- フィールド単位のエラーを取得 -->
+                        {{ field.errors }}
+                    </div>
+                </div>
+                {% endfor %}
+
+                <div class="offset-sm-4 col-sm-8">
+                    <button class="btn btn-primary" type="submit">送信</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
